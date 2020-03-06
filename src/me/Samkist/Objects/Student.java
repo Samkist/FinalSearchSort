@@ -33,7 +33,7 @@ public class Student implements Comparable<Student> {
 
     @Override
     public int compareTo(Student student) {
-        return getName().compareTo(student.getName());
+        return name.compareTo(student.getName());
     }
 
     @Override

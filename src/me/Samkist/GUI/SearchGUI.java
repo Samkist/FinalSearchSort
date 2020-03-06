@@ -124,24 +124,19 @@ public class SearchGUI extends GBDialog {
             }
             updateList(employees);
         } else if(studentButton.isSelected()) {
-            try {
-                Double.parseDouble(textField.getText());
-            } catch (Exception e) {
-                return;
-            }
             students = new ArrayList<>();
             if(linearSearch.isSelected()) {
-                Master.getStudents().stream().filter(s -> s.compareTo(new Student("", Double.parseDouble(textField.getText()))) == 0)
+                Master.getStudents().stream().filter(s -> s.compareTo(new Student(textField.getText(), 0.0)) == 0)
                         .forEach(students::add);
             } else {
                 new Sort<>(Master.getStudents(), "selection")
                         .get().forEach(students::add);
                 try {
-                    ArrayList<Student> sts = new Search<>(students, new Student("",
-                            Double.parseDouble(textField.getText()))).get();
+                    ArrayList<Student> sts = new Search<>(students, new Student(textField.getText(), 0.0)).get();
                     students.clear();
                     sts.forEach(students::add);
                 } catch(Exception e) {
+                    System.out.println("ex");
                     students.clear();
                 }
             }

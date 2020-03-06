@@ -9,6 +9,8 @@ import me.Samkist.Objects.Widget;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * Created by Samkist
@@ -28,6 +30,15 @@ public class Create extends GBDialog {
     private JLabel label2 = addLabel("Salary", 4, 2, 3, 1);
     private JTextField field2 = addTextField("", 5, 2, 3, 1);
     private JButton create = addButton("Create", 6, 2, 3, 1);
+
+    private String eF1Cache = "";
+    private String eF2Cache = "";
+
+    private String sF1Cache = "";
+    private String sF2Cache = "";
+
+    private String wF1Cache = "";
+    private String wF2Cache = "";
 
     @Override
     public void listDoubleClicked(JList<String> jList, String s) {
@@ -62,6 +73,9 @@ public class Create extends GBDialog {
         super(jFrame);
         this.frame = jFrame;
 
+        field1.addKeyListener(kl);
+        field2.addKeyListener(kl);
+
         bg.add(employeeButton);
         employeeButton.addChangeListener(changeListener);
         bg.add(studentButton);
@@ -85,12 +99,20 @@ public class Create extends GBDialog {
     private void updateList() {
         DefaultListModel<String> model = (DefaultListModel) list.getModel();
         model.clear();
-        model.addElement("Employees");
-        Master.getEmployees().stream().map(Employee::toString).forEach(model::addElement);
-        model.addElement("Students");
-        Master.getStudents().stream().map(Student::toString).forEach(model::addElement);;
-        model.addElement("Widgets");
-        Master.getWidgets().stream().map(Widget::toString).forEach(model::addElement);;
+        if(employeeButton.isSelected()) {
+            model.addElement("Employees");
+            Master.getEmployees().stream().map(Employee::toString).forEach(model::addElement);
+        }
+
+        if(studentButton.isSelected()) {
+            model.addElement("Students");
+            Master.getStudents().stream().map(Student::toString).forEach(model::addElement);
+        }
+
+        if(widgetButton.isSelected()) {
+            model.addElement("Widgets");
+            Master.getWidgets().stream().map(Widget::toString).forEach(model::addElement);
+        }
     }
 
     private void clearFields() {
@@ -122,7 +144,8 @@ public class Create extends GBDialog {
             if (employeeButton.isSelected()) {
                 Master.addEmployee(new Employee(field1.getText(), Double.parseDouble(field2.getText())));
             } else if (studentButton.isSelected()) {
-                Double gpa = Double.parseDouble(field2.getText());
+                String s = field2.getText();
+                Double gpa = Double.parseDouble(s.replaceAll("[$.]", ""));
                 if(gpa < 0 || gpa > 5)  { messageBox("Invalid GPA (0 < GPA < 5)"); clearFields(); return; }
                 Master.addStudent(new Student(field1.getText(), gpa));
             } else if (widgetButton.isSelected()) {
@@ -136,19 +159,68 @@ public class Create extends GBDialog {
     }
 
     ChangeListener changeListener = new ChangeListener() {
+
         @Override
         public void stateChanged(ChangeEvent changeEvent) {
             if(changeEvent.getSource() instanceof JRadioButton) {
                 if(employeeButton.isSelected()) {
+
                     label1.setText("Name");
                     label2.setText("Salary");
+
+                    field1.setText(eF1Cache);
+                    field2.setText(eF2Cache);
+
                 } else if(studentButton.isSelected()) {
+
                     label1.setText("Name");
                     label2.setText("GPA (0-5)");
+
+                    field1.setText(sF1Cache);
+                    field2.setText(sF2Cache);
+
                 } else if(widgetButton.isSelected()) {
+
                     label1.setText("Code (000)");
                     label2.setText("# Sold");
+
+                    field1.setText(wF1Cache);
+                    field2.setText(wF2Cache);
+
                 }
+            }
+            updateList();
+        }
+    };
+
+    KeyListener kl = new KeyListener() {
+
+        @Override
+        public void keyTyped(KeyEvent keyEvent) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent keyEvent) {
+
+        }
+
+        @Override
+        public void keyReleased(KeyEvent keyEvent) {
+
+            if(employeeButton.isSelected()) {
+                eF1Cache = field1.getText();
+                eF2Cache = field2.getText();
+            }
+
+            if(studentButton.isSelected()) {
+                sF1Cache = field1.getText();
+                sF2Cache = field2.getText();
+            }
+
+            if(widgetButton.isSelected()) {
+                wF1Cache = field1.getText();
+                wF2Cache = field2.getText();
             }
         }
     };
