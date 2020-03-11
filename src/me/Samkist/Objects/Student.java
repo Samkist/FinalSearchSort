@@ -26,7 +26,6 @@ public class Student implements Comparable<Student> {
     }
 
     public Student(String name, double gpa) {
-        if(gpa < 0 || gpa > 6) throw new IllegalArgumentException("Bad GPA");
         this.name = name;
         this.gpa = gpa;
     }

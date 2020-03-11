@@ -145,8 +145,11 @@ public class Create extends GBDialog {
                 Master.addEmployee(new Employee(field1.getText(), Double.parseDouble(field2.getText())));
             } else if (studentButton.isSelected()) {
                 String s = field2.getText();
-                Double gpa = Double.parseDouble(s.replaceAll("[$.]", ""));
-                if(gpa < 0 || gpa > 5)  { messageBox("Invalid GPA (0 < GPA < 5)"); clearFields(); return; }
+                Double gpa = Double.parseDouble(s.replaceAll("[$]", ""));
+                if(gpa < 0 || gpa > 5)  {
+                    System.out.println(gpa + " is less than 0 or greater than 5");
+                    messageBox("Invalid GPA (0 < GPA < 5)"); clearFields();
+                    return; }
                 Master.addStudent(new Student(field1.getText(), gpa));
             } else if (widgetButton.isSelected()) {
                 Master.addWidget(new Widget(field1.getText(), Integer.parseInt(field2.getText())));

@@ -50,7 +50,6 @@ public class ArrayList<E> extends AbstractList<E> implements List<E>, RandomAcce
             cache[x++] = data[i];
         }
         data[index] = element;
-        System.out.println("After index is replaced");
         for(Object o : data)
             System.out.println(o);
         System.out.println(size());
@@ -58,7 +57,6 @@ public class ArrayList<E> extends AbstractList<E> implements List<E>, RandomAcce
         for(int i = index+1; i < size()+1; i++) {
             data[i] = cache[x++];
         }
-        System.out.println("After cache is added on");
         for(Object o : data)
             System.out.println(o);
         clear();
@@ -238,7 +236,4 @@ public class ArrayList<E> extends AbstractList<E> implements List<E>, RandomAcce
         elementData[index] = element;
         return element;
     }
-
-
-
 }
